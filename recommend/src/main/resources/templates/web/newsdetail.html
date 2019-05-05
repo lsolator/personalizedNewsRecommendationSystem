@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>${news.title!}</title>
+
+    <!-- Bootstrap -->
+    <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/article.css"/>
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/global.css"/>
+    <link href="../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/prettify/sunburst-by-james-for-prettify.css"/>
+    <script type="text/javascript" src="../../static/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <!--source-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/article.css"/>
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/global.css"/>
+    <link rel="stylesheet" media="screen" href="/prettify/sunburst-by-james-for-prettify.css"/>
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript" src="/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="top-common-nav  mb-50">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <div class="logo">
+                    <a href="/">RN在线新闻</a>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse">
+                <div class="col-xs-12 col-md-8">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">首页 <span class="sr-only">(current)</span> </a></li>
+                        <li><a href="/category/">发现 </a></li>
+                        <li><a href="/topic/">话题 </a></li>
+                    </ul>
+                    <div style="margin-right: 5%;float: right !important;">
+                        <form class="navbar-form navbar-left" role="search" id="top-search-form" action="/search/" method="get">
+                            <div class="input-group">
+                                <input type="text" name="q" id="searchBox" class="form-control col-md-5-1" value="" placeholder="找新闻，搜下先" />
+                                <button class="input-group-addon btn" type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                        </form>
+                        <button type="button" class="btn button-blue ask-button">搜索</button>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <#if username??>
+                    <li><a href="/" class="active" id="unread_notifications"><span class="fa fa-bell-o fa-lg"></span></a></li>
+                    <li><a href="/" class="active" id="unread_messages"><i class="fa fa-envelope-o fa-lg"></i></a></li>
+                    <li class="dropdown user-avatar">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="avatar-32 mr-5" alt="${username!}" src="/pc_theme/images/avatar/1.jpg"/>
+                            <span>${username!}</span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="divider"></li>
+                            <li><a href="/userMessage-topics">我的主页</a></li>
+                            <li><a href="/userMessage-collect">设置</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/user/logout">退出</a></li>
+                        </ul>
+                    </li>
+                    <#else>
+                    <li><a href="/user/login">登录</a></li>
+                    <li><a href="/user/reg">注册</a></li>
+                </#if>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="wrap">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-md-9 mt-10">
+                <!--文章展示-->
+                <div class="article-content" data-info-id="${news.id!}">
+                    <div class="article-header">
+                        <h4>${news.title!}</h4>
+                        <div class="post-opt">
+                            <ul class="list-inline text-muted">
+                                <li><i class="fa fa-clock-o"></i> 发表于 ${news.date!?datetime?string('yyyy-MM-dd')}
+                                    ${news.newsTime!}
+                                </li>
+                                <li>阅读 ( ${news.readNum!} )</li>
+                                <li>分类：<a href="/category/${category}" target="_blank">${category}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="article-content-box">
+                        <div class="summary">
+                            ${news.content!}
+                        </div>
+                        <div class="entry-copyright">
+                            <p>本文系转载自其它媒体或用户发布，目的在于信息传递，并不代表本站赞同其观点和对其真实性负责，如有新闻稿件和图片作品的内容、版权以及其它问题的，请联系我们。</p>
+                        </div>
+                        <#if username??>
+                        <div class="text-center mt-30 mb-20">
+                            <#if isCollect??>
+                            <button id="attention" style="display: none" class="btn btn-default btn-lg add-favorite" onclick="attention('${news.nid}',1)">
+                                <i class="fa fa-heart-o"></i>收藏
+                            </button>
+                            <button id="attention-1" class="btn btn-default btn-lg add-favorite" onclick="attention('${news.nid}',-1)">
+                                <i class="fa fa-heart"></i>已收藏
+                            </button>
+                            <#else>
+                            <button id="attention"  class="btn btn-default btn-lg add-favorite" onclick="attention('${news.nid}',1)">
+                                <i class="fa fa-heart-o"></i>收藏
+                            </button>
+                            <button id="attention-1" style="display: none" class="btn btn-default btn-lg add-favorite" onclick="attention('${news.nid}',-1)">
+                                <i class="fa fa-heart"></i>已收藏
+                            </button>
+                            </#if>
+                        </div>
+                        </#if>
+                        <div class="tags-box">
+                            <#list tags as list>
+                            <span class="tat-content"><a class="TopicLink" href="/topic/${list.tagName!}"
+                                                         target="_blank">${list.tagName!}</a></span>
+                        </#list>
+                    </div>
+                </div>
+            </div>
+            <!--评论-->
+            <div class="widget-answers mt-15">
+                <div class="list-header">
+                    <h4>${size!}条评论</h4>
+                    <div class="List-headerOptions">默认排序 <i class="fa fa-sort"></i></div>
+                </div>
+                <div class="widget-comments mb-20 collapse in" style="">
+                    <div class="widget-comment-list">
+                        <#if commentList??>
+                        <#list commentList as list>
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="/userMessage/${list.uid}" target="_blank"><img class="media-object avatar-27"  src="/pc_theme/images/avatar/1.jpg" height="56px" width="56px"/></a>
+                            </div>
+                            <div class="media-body">
+                                <div class="media-heading">
+                                    <a href="/userMessage/${list.uid}" target="_blank">${list.userName}</a>
+                                </div>
+                                <div class="content">${list.comment!}</div>
+                                <div class="media-footer">
+                                    <div style="float: right !important;">
+                                        <ul class="list-inline text-muted">
+                                            <li>${list.commentTime!}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="text-center mb-20 mt-20">
+                        </div>
+                    </#list>
+                    </#if>
+                </div>
+                <div class="widget-comment-form row">
+                    <form  class="col-md-12">
+                        <div class="form-group">
+                            <textarea name="content" placeholder="写下你的评论" class="form-control" id="comment"></textarea>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <input type="hidden" id='articleId' value="${news.nid!}">
+                            <button type="button" class="btn btn-primary btn-sm ml-10 comment-btn" onclick="addComment()">提交评论</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!--相似文章-->
+        <div class="col-xs-12 col-md-3 mt-10">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title"><i class="es-icon es-icon-whatshot"></i>你可能感兴趣的</h3>
+                </div>
+                <div class="panel-body">
+                    <#list similarNewsList as item>
+                    <div class="media media-number">
+                        <!--缺少某些东西-->
+                        <div class="media-body">
+                            <a class="link-dark" href="/news/${item.nid!}" title="">${item.title!}</a>
+                        </div>
+                    </div>
+                </#list>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<footer id="footer">
+    <div class="container">
+        <div class="text-center">
+            <a href="/">RN在线新闻推荐系统</a><span class="span-line">|</span>
+            <a href="/" target="_blank">联系我们</a><span class="span-line">|</span>
+            <a href="/" target="_blank">lsolator</a>
+        </div>
+        <div class="copyright mt-10">
+            Powered By <a href="/" target="_blank">RN新闻推荐平台</a> Release 20190320
+        </div>
+    </div>
+</footer>
+</body>
+<script type="application/javascript">
+    function addComment() {
+        var nid = $("#articleId").val();
+        var comment = $("#comment").val();
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/news/comment" ,//url
+            data: {
+                nid:nid,
+                comment:comment
+
+            },
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.code === "1") {
+                    alert("评论成功");
+                    window.location.href = "/news/"+nid;
+                } else if (result.code === "2") {
+                    alert("评论不能为空！");
+                } else {
+                    alert("请登陆用户！");
+                }
+            },
+            error : function() {
+                alert("异常！");
+            }
+        });
+    }
+
+    function attention(val,val2) {
+        $.get( "/user/news", { nid: val, isCollect: val2 } );
+        if (val2 === -1) {
+            $("#attention-1").hide();
+            $("#attention").show();
+        } else {
+            $("#attention-1").show();
+            $("#attention").hide();
+        }
+        console.log(val2);
+    }
+</script>
+</html>

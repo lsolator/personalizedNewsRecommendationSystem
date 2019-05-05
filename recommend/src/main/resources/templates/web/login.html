@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>用户登录</title>
+    <meta name="keywords" content="${seo_keywords!}" />
+    <meta name="description" content="${seo_description!}" />
+    <meta name="keywords" content="用户登录" />
+    <meta name="description" content="用户登录" />
+    <!-- Bootstrap -->
+    <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/account.css" />
+    <script type="text/javascript" src="../../static/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <!--source-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/account.css" />
+    <script type="text/javascript" src="/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+    <style type="text/css">
+        .btntag{
+
+        }
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- danger: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="../../static/pc_theme/js/sea.js"></script>
+    <script type="text/javascript" src="../../static/pc_theme/js/sea.config.js"></script>
+</head>
+<body>
+<div class="container">
+
+    <div class="col-md-6 col-md-offset-3 bg-white login-wrap">
+        <h1 class="h4 text-center text-muted login-title">用户登录</h1>
+        <!--action="/user/login_act" method="POST"-->
+        <form role="form" id="myloginForm" name="loginForm">
+            <input type="hidden" name="redirectUrl" value="${redirectUrl!}">
+            <div class="form-group ">
+                <label class="required">邮箱/手机</label>
+                <input type="text" class="form-control" name="username" id="username" required placeholder="手机号或者邮箱" value="">
+            </div>
+            <div class="form-group ">
+                <label for="password" class="required">密码</label>
+                <input type="password" class="form-control" name="password" id="password" required placeholder="不少于 6 位">
+            </div>
+            <div class="form-group ">
+                <label for="captcha" class="required">验证码</label>
+                <input type="text" class="form-control" id="captcha" name="captcha" required="" placeholder="请输入下方的验证码">
+                <div class="mt-10">
+                    <a href="javascript:void(0);" id="reloadCaptcha"><img src="/captcha/default"></a>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <div class="checkbox pull-left">
+                    <label><input name="rememberMe" id="rememberMe" value="1" type="checkbox" checked="checked"> 记住登录状态</label> <span style="color:#A00;">(勿在公用电脑上使用)</span>
+                </div>
+                <button type="button" id="login-btn" class="btn btn-primary pull-right pl20 pr20" onclick="login()">登录</button>
+            </div>
+        </form>
+
+        <!--错误弹窗-->
+        <div id="alertUnull" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>您的用户名没有填写。
+        </div>
+        <div id="alertUerr" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>您的用户名格式错误。
+        </div>
+        <div id="alertPnull" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>您的密码没有填写。
+        </div>
+        <div id="alertCnull" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>您的验证码没有填写。
+        </div>
+        <div id="alertError" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>用户名或者密码错误。
+        </div>
+        <div id="alertCodeError" class="alert alert-danger hide" >
+            <a href="#" class="close" >&times;</a>
+            <strong>错误！</strong>验证码错误。
+        </div>
+    </div>
+
+    <!--登陆成功回调-->
+    <div class="modal fade"  id="myModal" role="dialog" data-backdrop="false"  >
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <p class="text-center mb-0">
+                    <span>
+                        登陆成功，跳转至主页...
+                    </span>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center col-md-12 login-link">
+        <a href="/">首页</a> | <a href="/user/reg">注册新账号</a>
+    </div>
+</div>
+
+<!--选择关注的主题的弹窗-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">选择关注的标签</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <#list tags as list>
+                    <li class="list-group-item">
+                        <span>${list.tagName}</span>
+                        <span style="float: right !important;">
+                            <button id="attention-${list_index}"  class="btn btn-info btn-sm"  onclick="attention('${list.tagName}','1','${list_index}')">关注</button>
+                            <button id="attention-1-${list_index}" class="btn btn-danger btn-sm" style="display: none;" onclick="attention('${list.tagName}','-1','${list_index}')">已关注</button>
+                        </span>
+                    </li>
+                    </#list>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="toUserHome()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="application/javascript">
+    $('.close').click(function(){
+        $('.alert-danger').removeClass('in').addClass('hide');
+    });
+
+
+    function login() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        var captcha = $("#captcha").val();
+        if (username === "") {
+            $("#alertUnull").removeClass('hide').addClass('in');
+            return false;
+        }
+        if (password === "") {
+            $("#alertPnull").removeClass('hide').addClass('in');
+            return false;
+        }
+        if (captcha === "") {
+            $("#alertCnull").removeClass('hide').addClass('in');
+            return false;
+        }
+        if (!(isEmail(username) || isPhoneNo(username))) {
+            $("#alertUerr").removeClass('hide').addClass('in');
+            return false;
+        }
+
+        $.ajax({
+            //几个参数需要注意一下
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: "/user" ,//url
+            data: {
+                username:$("#username").val(),
+                password:md5($("#password").val()) ,
+                captcha:$("#captcha").val(),
+                rememberMe:$("#rememberMe").val()
+            },
+            success: function (result) {
+                console.log(result);//打印服务端返回的数据(调试用)
+                if (result.code === "1") {          //主页
+                    $('#myModal').modal('show');
+                    setTimeout(function () {
+                        $("#myModal").modal("hide")
+                    }, 1200);
+                    window.location.href = "/";
+                } else if (result.code === "3") {   //验证码错误
+                    $("#alertCodeError").removeClass('hide').addClass('in');
+                } else if (result.code ==="0") {    //用户或者密码错误
+                    $("#alertError").removeClass('hide').addClass('in');
+                } else if (result.code === "2") {   //第一次登陆
+                    $("#exampleModal").modal('show');
+                }
+            },
+            error : function() {
+                alert("异常！");
+            }
+        });
+    }
+
+    // 验证手机号
+    function isPhoneNo(phone) {
+        var pattern = /^1[34578]\d{9}$/;
+        return pattern.test(phone);  }
+
+    function isEmail(email) {
+        var pattern = /^\w+((.\w+)|(-\w+))@[A-Za-z0-9]+((.|-)[A-Za-z0-9]+).[A-Za-z0-9]+$/;
+        return pattern.test(email);
+    }
+
+    /*验证码重新加载*/
+    $("#reloadCaptcha").click(function(){
+        new_src = '/captcha/default?'+Math.random();
+        $(this).find("img").attr("src",new_src);
+    });
+
+    function toUserHome() {
+        window.location.href = "/userMessage-topics";
+    }
+
+    function attention(val,val2,val3) {
+        $.get( "/user/topic", { tagName: val, isCheck: val2 } );
+        if (val2 === "-1") {
+            $("#attention-1-"+val3).hide();
+            $("#attention-"+val3).show();
+        } else {
+            $("#attention-1-"+val3).show();
+            $("#attention-"+val3).hide();
+        }
+        console.log(val2);
+    }
+</script>
+</html>

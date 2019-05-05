@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!-- Bootstrap -->
+    <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/people.css"/>
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/global.css"/>
+    <link href="../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/prettify/sunburst-by-james-for-prettify.css"/>
+    <script type="text/javascript" src="../../static/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <!--source-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/people.css"/>
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/global.css"/>
+    <link rel="stylesheet" media="screen" href="/prettify/sunburst-by-james-for-prettify.css"/>
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript" src="/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="/assets/skin/pc_theme/defalut/js/sea.js"></script>
+    <script type="text/javascript" src="/assets/skin/pc_theme/defalut/js/sea.config.js"></script>
+    <script type="text/javascript" src="/user/status.json"></script>
+</head>
+<body>
+<div class="top-common-nav  mb-50">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <div class="logo">
+                    <a href="/">RN在线新闻</a>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse">
+                <div class="col-xs-12 col-md-8">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">首页 <span class="sr-only">(current)</span> </a></li>
+                        <li><a href="/category/">发现 </a></li>
+                        <li><a href="/topic/">话题 </a></li>
+                    </ul>
+                    <div style="margin-right: 5%;float: right !important;">
+                        <form class="navbar-form navbar-left" role="search" id="top-search-form" action="/search/"
+                              method="get">
+                            <div class="input-group">
+                                <input type="text" name="q" id="searchBox" class="form-control col-md-5-1" value=""
+                                       placeholder="找新闻，搜下先"/>
+                                <button class="input-group-addon btn" type="submit"><i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                        <button type="button" class="btn button-blue ask-button">搜索</button>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <#if username??>
+                    <li><a href="/" class="active" id="unread_notifications"><span
+                            class="fa fa-bell-o fa-lg"></span></a></li>
+                    <li><a href="/" class="active" id="unread_messages"><i class="fa fa-envelope-o fa-lg"></i></a></li>
+                    <li class="dropdown user-avatar">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="avatar-32 mr-5" alt="${username!}" src="/pc_theme/images/avatar/1.jpg"/>
+                            <span>${username!}</span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="divider"></li>
+                            <li><a href="/userMessage-topics">我的主页</a></li>
+                            <li><a href="/userMessage-collect">设置</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/user/logout">退出</a></li>
+                        </ul>
+                    </li>
+                    <#else>
+                    <li><a href="/user/login">登录</a></li>
+                    <li><a href="/user/reg">注册</a></li>
+                </#if>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="wrap">
+    <div class="container">
+        <div class="row mt-10">
+            <div class="col-xs-12 col-md-12">
+                <div class="user-card">
+                    <div class="ProfileHeader-userCover">
+                        <div class="user-cover UserCover--colorBlock" style="background: rgb(112, 86, 68);"></div>
+                    </div>
+                    <div class="profile-header-wrapper">
+                        <div class="profile-header-main">
+                            <div class="user-avatar profile-header-avatar" style="top: -25px;">
+                                <img class="Avatar Avatar--large UserAvatar-inner" width="160" height="160" src="/pc_theme/images/avatar/1.jpg"/>
+                            </div>
+                            <div class="profile-header-content">
+                                <div class="profile-header-content-head">
+                                    <h1 class="profile-header-title">
+                                        <span class="profile-header-name">${user.userName!}</span>
+                                        <span class="profile-header-headline">${user.phoneNumber!}</span>
+                                    </h1>
+                                </div>
+
+                                <div class="profile-header-content-footer">
+                                    <div class="profile-header-buttons">
+                                        <#if check??>
+                                        <button id="attention" class="btn btn-primary" style="float: right !important;display: none" onclick="attention('${user.uid}','1')">关注</button>
+                                        <button id="attention-1" class="btn btn-danger" style="float: right !important;" onclick="attention('${user.uid}','-1')">已关注</button>
+                                        <#else>
+                                        <button id="attention"  class="btn btn-primary" style="float: right !important;" onclick="attention('${user.uid}','1')">关注</button>
+                                        <button id="attention-1" class="btn btn-danger " style="float: right !important;display: none" onclick="attention('${user.uid}','-1')">已关注</button>
+                                    </#if>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-md-9 main">
+                <div class="index-list">
+                    <div class="profile-main">
+                        <ul>
+                            <li class="activ"><a >动态</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <#if readLog??>
+                    <#list readLog as list>
+                    <!--浏览历史-->
+                    <div class="index-list-item" data-info-type="0" id="n${list.nid}">
+                        <h2 class="title"><a href="/news/${list.nid!}">${list.title!}</a></h2>
+                        <div class="summary" style="margin-top: 10px">
+                            <ul class="list-inline text-muted">
+                                <li><i class="fa fa-clock-o"></i> 发表于 ${list.date!}
+                                </li>
+                                <li><i class="fa fa-book"></i>浏览于 ( ${list.collectTime!} )</li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </#list>
+                <#else>
+                <div class="init">
+                    <p class="text-center">
+                        (ﾟ∀ﾟ　)<br>  此用户暂时没有任何浏览历史~
+                    </p>
+                </div>
+            </#if>
+
+            <div class="text-center">
+                <ul class="pagination">
+                    <#if p !=1>
+                    <li class="prev"><a href="?p=${p-1}" rel="prev" title="上一页">上一页</a></li>
+                    <#else>
+                    <li class="disabled"><a href="#" title="上一页">上一页</a></li>
+                </#if>
+                <#list 1..total as i>
+                <#if p ==i>
+                <li class="active"><a href="?p=${i}" class="ahover" title="${i}">${i}</a></li>
+                <#else>
+                <li><a href="?p=${i}" title="${i}">${i}</a></li>
+            </#if>
+        </#list>
+        <#if p!=total>
+        <li class="next"><a href="?p=${p+1}" rel="next" title="下一页">下一页</a></li>
+        <#else>
+        <li class="disabled"><a href="#" title="下一页">下一页</a></li>
+    </#if>
+    </ul>
+</div>
+
+</div>
+</div>
+
+<div class="col-md-3">
+    <div class="widget-user-card">
+        <div class="card-header">
+            <div class="card-header-text">个人成就</div>
+        </div>
+        <div class="card-profile-body">
+            <div class="profile-item">
+                <div class="icon-graf">
+                    <i class="fa fa-pencil-square" aria-hidden="true"></i> <a href="" target="_blank">累计评论N次评论</a>
+                </div>
+                <div class="Profile-sideColumnItemValue"><!--获得 5,904 次感谢 ， 46,355 次收藏--></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-box">
+        <div class="col-xs-6 col-md-6 card-numberboard-items">
+            <div class="card-itemname">关注</div>
+            <a href="#"><strong class="card-itemnumber">${userNum!}</strong></a>
+        </div>
+        <div class="col-xs-6 col-md-6 card-numberboard-items">
+            <div class="card-itemname">粉丝</div>
+            <a href="#"><strong class="card-itemnumber">${attentionNum!}</strong></a>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+
+<!--修改信息的弹窗-->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">编辑个人信息</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form role="form" id="registerForm" action="/user/reg">
+                    <div class="form-group ">
+                        <label class="required">手机号码/邮箱</label>
+                        <input type="text" class="form-control" name="phoneNumber" value="${phone}" required placeholder="请输入您的手机号码/邮箱" disabled>
+                    </div>
+                    <div class="form-group ">
+                        <label class="required">昵称</label>
+                        <input type="text" class="form-control" name="username" id="username" value="${username}" required placeholder="请输入您的昵称">
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="required">原始密码</label>
+                        <input type="password" class="form-control" name="password" id="password" required placeholder="不少于 6 位">
+                    </div>
+                    <div class="form-group ">
+                        <label for="password2" class="required">新密码</label>
+                        <input type="password" class="form-control" name="password2" id="password2" required placeholder="不少于 6 位">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="alertUser()">保存</button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="application/javascript">
+function attention(val,val2) {
+    $.get( "/user/attention", { uid: val, isCheck: val2 } );
+    if (val2 === "-1") {
+        $("#attention-1").hide();
+        $("#attention").show();
+    } else {
+        $("#attention-1").show();
+        $("#attention").hide();
+    }
+}
+</script>
+</html>

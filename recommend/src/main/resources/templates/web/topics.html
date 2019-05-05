@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>话题</title>
+    <!-- Bootstrap -->
+    <link href="../../static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/index.css" />
+    <link rel="stylesheet" media="screen" href="../../static/pc_theme/css/global.css" />
+    <link href="../../static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="../../static/prettify/sunburst-by-james-for-prettify.css" />
+    <script type="text/javascript" src="../../static/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../static/bootstrap/js/bootstrap.min.js"></script>
+    <!--source-->
+    <link href="/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/index.css" />
+    <link rel="stylesheet" media="screen" href="/pc_theme/css/global.css" />
+    <link rel="stylesheet" media="screen" href="/prettify/sunburst-by-james-for-prettify.css" />
+    <link href="/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <script type="text/javascript" src="/pc_theme/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="top-common-nav  mb-50">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span> <span
+                        class="icon-bar"></span> <span class="icon-bar"></span> <span
+                        class="icon-bar"></span>
+                </button>
+                <div class="logo">
+                    <a href="/">RN在线新闻</a>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse">
+                <div class="col-xs-12 col-md-8">
+                    <ul class="nav navbar-nav">
+                        <li class="active"><a href="/">首页 <span class="sr-only">(current)</span> </a></li>
+                        <li><a href="/category/">发现 </a></li>
+                        <li><a href="/topic/">话题 </a></li>
+                    </ul>
+                    <div style="margin-right: 5%;float: right !important;">
+                        <form class="navbar-form navbar-left" role="search" id="top-search-form" action="/search/" method="get">
+                            <div class="input-group">
+                                <input type="text" name="q" id="searchBox" class="form-control col-md-5-1" value="" placeholder="找新闻，搜下先" />
+                                <button class="input-group-addon btn" type="submit"><i class="fa fa-search"></i></button>
+                            </div>
+                        </form>
+                        <button type="button" class="btn button-blue ask-button">搜索</button>
+                    </div>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <#if username??>
+                    <li><a href="/" class="active" id="unread_notifications"><span class="fa fa-bell-o fa-lg"></span></a></li>
+                    <li><a href="/" class="active" id="unread_messages"><i class="fa fa-envelope-o fa-lg"></i></a></li>
+                    <li class="dropdown user-avatar">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                            <img class="avatar-32 mr-5" alt="${username!}" src="/pc_theme/images/avatar/1.jpg"/>
+                            <span>${username!}</span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li class="divider"></li>
+                            <li><a href="/userMessage-topics">我的主页</a></li>
+                            <li><a href="/userMessage-collect">设置</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/user/logout">退出</a></li>
+                        </ul>
+                    </li>
+                    <#else>
+                    <li><a href="/user/login">登录</a></li>
+                    <li><a href="/user/reg">注册</a></li>
+                </#if>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="wrap">
+    <div class="container">
+        <div class="row mt-10">
+            <div class="col-xs-12 col-md-9 main">
+                <#if !tagName??>
+                <div class="widget-category">
+                    <div class="topic-square">
+                        <h2><i class="fa fa-th-large"></i> 话题广场</h2>
+                    </div>
+                    <div class="col-sm-12">
+                        <ul class="list">
+                            <#list topics as list>
+                            <li><a href="/topic/${list.tagName!}">${list.tagName!}</a></li>
+                        </#list>
+                        </ul>
+                    </div>
+                </div>
+                <#else>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <#if username??>
+                        <strong><span style="font-size: 18px">话题：${tagName!}</span></strong>
+                        <#if isAttention??>
+                        <button id="attention" class="btn btn-primary" style="float: right !important;display: none" onclick="attention('${tagName}','1')">关注</button>
+                        <button id="attention-1" class="btn btn-danger" style="float: right !important;" onclick="attention('${tagName}','-1')">已关注</button>
+                        <#else>
+                        <button id="attention"  class="btn btn-primary" style="float: right !important;" onclick="attention('${tagName}','1')">关注</button>
+                        <button id="attention-1" class="btn btn-danger " style="float: right !important;display: none" onclick="attention('${tagName}','-1')">已关注</button>
+                        </#if>
+                        <#else>
+                        <ol class="breadcrumb">
+                            <li>话题</a></li>
+                            <li class="active">${tagName!}</li>
+                        </ol>
+                    </#if>
+                    </div>
+                </div>
+            </#if>
+            <div class="index-list">
+                <#list news as list>
+                <div class="index-list-item" data-info-type="0" data-info-id="62">
+                    <h2 class="title"><a href="/news/${list.nid}">${list.title}</a></h2>
+                    <div class="summary" style="margin-top: 10px">
+                        <ul class="list-inline text-muted">
+                            <li><i class="fa fa-clock-o"></i> 发表于 ${list.date!} ${list.newsTime}
+                            </li>
+                            <li>阅读 ( ${list.readNum} )</li>
+                        </ul>
+
+                    </div>
+                    <div class="item-actions" style="float: right !important;padding-top: 0px">
+                        <button type="button" class="Button Button--plain"><span class="fa fa-comment">​</span> 评论
+                        </button>
+                        <button type="button" class="Button Button--plain star"><i class="fa fa-star">​</i> 收藏</button>
+                    </div>
+                </div>
+            </#list>
+            <!--<div class="init">
+                <p class="text-center">
+                (ﾟ∀ﾟ　)<br>  暂时没有任何数据
+                </p>
+            </div>-->
+            <div class="text-center">
+                <!--分页-->
+                <ul class="pagination">
+                    <#if p !=1>
+                    <li class="prev"><a href="?p=${p-1}&q=${q!}" rel="prev" title="上一页">上一页</a></li>
+                    <#else>
+                    <li class="disabled"><a href="#" title="上一页">上一页</a></li>
+                </#if>
+                <#list 1..total as i>
+                <#if p ==i>
+                <li class="active"><a href="?p=${i}&q=${q!}" class="ahover" title="${i}">${i}</a></li>
+                <#else>
+                <li><a href="?p=${i}&q=${q!}" title="${i}">${i}</a></li>
+            </#if>
+        </#list>
+        <#if p!=total>
+        <li class="next"><a href="?p=${p+1}&q=${q!}" rel="next" title="下一页">下一页</a></li>
+        <#else>
+        <li class="disabled"><a href="#" title="下一页">下一页</a></li>
+    </#if>
+    </ul>
+</div>
+</div>
+</div>
+<div class="col-md-3 hidden-xs side">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><i class="es-icon es-icon-whatshot"></i>最新新闻</h3>
+        </div>
+        <div class="panel-body">
+            <#list latestNews as item>
+            <div class="media media-number">
+                <!--缺少某些东西-->
+                <div class="media-body">
+                    <a class="link-dark" href="/news/${item.nid!}" title="">${item.title!}</a>
+                </div>
+            </div>
+        </#list>
+    </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer id="footer">
+    <div class="container">
+        <div class="text-center">
+            <a href="/">RN在线新闻推荐系统</a><span class="span-line">|</span>
+            <a href="/" target="_blank">联系我们</a><span class="span-line">|</span>
+            <a href="/" target="_blank">lsolator</a>
+        </div>
+        <div class="copyright mt-10">
+            Powered By <a href="/" target="_blank">RN新闻推荐平台</a> Release 20190320
+        </div>
+    </div>
+</footer>
+</body>
+<script type="application/javascript">
+    function attention(val,val2) {
+        $.get( "/user/topic", { tagName: val, isCheck: val2 } );
+        if (val2 === "-1") {
+            $("#attention-1").hide();
+            $("#attention").show();
+        } else {
+            $("#attention-1").show();
+            $("#attention").hide();
+        }
+        console.log(val2);
+    }
+</script>
+</html>

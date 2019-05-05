@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>新闻添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="/layuiadmin/layui/css/layui.css" media="all">
+</head>
+<body>
+
+<div class="layui-form" lay-filter="layuiadmin-form-useradmin" id="layuiadmin-form-useradmin"
+     style="padding: 20px 0 0 0;">
+    <div class="layui-form-item">
+        <label class="layui-form-label">新闻标题</label>
+        <div class="layui-input-block">
+            <input type="hidden" name="nid" value="-1"/>
+            <input type="text" name="title" lay-verify="required" placeholder="请输入新闻标题" autocomplete="off"
+                   class="layui-input" width="100%">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">新闻类别</label>
+        <div class="layui-input-inline">
+            <select name="tagName" lay-verify="required" lay-search="" id="dropdownD">
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">新闻内容</label>
+        <div class="layui-input-block">
+            <textarea name="content" placeholder="请输入内容" class="layui-textarea" cols="12" rows="50"></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item layui-hide">
+        <input type="button" lay-submit lay-filter="LAY-user-front-submit" id="LAY-user-front-submit" value="确认">
+    </div>
+</div>
+
+<script src="/layuiadmin/layui/layui.js"></script>
+<script>
+    layui.config({
+        base: '/layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index', 'form'], function () {
+        var $ = layui.$
+            , form = layui.form;
+
+        var build_dropdownD = function (data, element, defaultText) {
+            element.empty().append('<option value="">' + defaultText + '</option>');
+            for (var i = 0; i < data.length; i++) {
+                element.append('<option value="' + data[i].tagName + '">' + data[i].tagName + '</option>');
+            }
+        };
+
+        $.ajax({
+            type: 'GET',
+            url: '/api/tag',
+            dataType: 'json',
+            cache: false,
+            async: false,
+            success: function (data) {
+                console.log(data);
+                build_dropdownD(data, $('#dropdownD'), '直接选择或搜索选择');//填充表单
+                form.render()
+            }
+        });
+
+        //更新信息的部分
+        var urlStr = window.location.search.replace('?', '');
+        if (urlStr !== "") {
+            var req = GetRequest();
+            $.ajax({
+                type: 'POST',
+                url: '/api/news',
+                dataType: 'json',
+                data: {nid:req['nid']},
+                success: function (data) {
+                    $("input[name='nid']").val(data.nid);
+                    $("input[name='title']").val(data.title);
+                    $("textarea[name='content']").val(data.content);
+                    var tagName =  req['tagName'] ;
+                    var select = 'dd[lay-value=' + tagName + ']';
+                    $('#dropdownD').siblings("div.layui-form-select").find('dl').find(select).click();
+                    $('#dropdownD').attr("disabled", "disabled");
+                    console.log(data);
+                    form.render()
+                }
+            });
+        }
+
+        function GetRequest() {
+            var url = location.search; //获取url中"?"符后的字串
+            url = decodeURIComponent(url);
+            var theRequest = new Object();
+            if (url.indexOf("?") != -1) {
+                var str = url.substr(1);
+                strs = str.split("&");
+                for(var i = 0; i < strs.length; i ++) {
+                    theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
+                }
+            }
+            return theRequest;
+        }
+
+    })
+</script>
+</body>
+</html>
